@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_titlebar_rootlayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/iv_titlebar_left"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_centerInParent="true"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:src="@drawable/baseline_agriculture_24"/>
+
+    <TextView
+        android:id="@+id/it_titlebar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:ellipsize="end"
+        android:maxEms="11"
+        android:singleLine="true"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/iv_titlebar_right"
+        android:layout_width="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_height="fill_parent"
+        android:padding="15dp"
+        android:gravity="center"
+        android:src="@drawable/baseline_airport_shuttle_24"/>
+
+</RelativeLayout>
