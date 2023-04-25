@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
         tv_message = findViewById(R.id.tv_message);
         bt_message = findViewById(R.id.bt_message);
         bt_subscription = findViewById(R.id.bt_subscription);
-
         bt_message.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
