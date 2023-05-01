@@ -1,11 +1,15 @@
 package com.example.dagger2demo.myEngines;
 
-import com.example.dagger2demo.MainActivity;
+import com.example.dagger2demo.activitys.MainActivity;
+import com.example.dagger2demo.myComponent.SwordmanComponent;
+
+import javax.inject.Singleton;
 
 import dagger.Component;
-import dagger.Module;
 
-@Component(modules = {EngineModule.class})
-public interface MainActivityEngineComponent {
+@Singleton
+@Component(modules = {EngineModule.class},dependencies = SwordmanComponent.class)
+public interface MainEngineComponent {
     public void inject(MainActivity activity);
+
 }
