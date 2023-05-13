@@ -1,0 +1,5 @@
+Glide图形加载 ： com.github.bumptech.glide:glide:4.8.0   
+圆角图形库 ： 'de.hdodenhof:circleimageview:3.0.1'
+okhttp库：    com.squareup.okhttp3:okhttp:3.4.1
+gson库： 'com.google.code.gson:gson:2.8.6'  
+jsoup解析： 'org.jsoup:jsoup:1.13.1'
