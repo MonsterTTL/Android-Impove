@@ -18,12 +18,12 @@ import android.widget.Toast;
 import com.example.ipcdemo.R;
 import com.example.ipcdemo.UserManager;
 import com.example.ipcdemo.aidl.Book;
-import com.example.ipcdemo.aidl.IBookManager;
 import com.example.ipcdemo.databinding.ActivityMainBinding;
 import com.example.ipcdemo.parcelables.ARealMan;
 import com.example.ipcdemo.serializableClass.User;
 import com.example.ipcdemo.services.MYIPCService;
-import com.example.ipcdemo.services.MYIPCService.*;
+import com.example.ipcdemo.services.mBookManagerImpl;
+import com.example.ipcdemo.services.mIBookManager;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     private static final String TAG = "IPCService";
 
-    private IBookManager binder;
-
+    //private IBookManager binder;
+    private mIBookManager binder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onServiceConnected(ComponentName name, IBinder service) {
                         Log.d(TAG, "onServiceConnected: "+name);
                         Book first;
-                        binder = IBookManager.Stub.asInterface(service);
+                        binder = mBookManagerImpl.asInterface(service);
                         try {
                             binder.addBook(new Book(99,"周世纪"));
                             first = binder.getBookList().get(0);
@@ -129,8 +129,6 @@ public class MainActivity extends AppCompatActivity {
                             throw new RuntimeException(e);
                         }
                         Toast.makeText(MainActivity.this, first.bookName, Toast.LENGTH_SHORT).show();
-
-
                     }
 
                     @Override

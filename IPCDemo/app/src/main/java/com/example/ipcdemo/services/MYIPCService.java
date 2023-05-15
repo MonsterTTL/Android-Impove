@@ -9,6 +9,9 @@ import android.util.Log;
 
 import com.example.ipcdemo.aidl.Book;
 import com.example.ipcdemo.aidl.IBookManager;
+import com.example.ipcdemo.services.mIBookManager;
+import com.example.ipcdemo.services.mBookManagerImpl;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +22,7 @@ public class MYIPCService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
-    public IBinder binder = new MyBinder();
+    public IBinder binder = new mBookManagerImpl();
     private static final String TAG = "IPCService";
     public MYIPCService() {
 
@@ -37,7 +40,9 @@ public class MYIPCService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        return new BookBinder().asBinder();
+        //return new BookBinder().asBinder();
+        Log.d(TAG, "onBind: "+binder.getClass().getName());
+        return binder;
     }
 
     public class MyBinder extends Binder{
