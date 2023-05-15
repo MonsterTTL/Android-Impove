@@ -11,6 +11,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.Parcel;
 import android.os.Process;
+import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 import android.util.Log;
 
@@ -28,7 +29,7 @@ public class BookManagerService extends Service {
     private static final String TAG = "BookManagerService";
     public static final int UPDATE = 1;
     private CopyOnWriteArrayList<Book> mList = new CopyOnWriteArrayList<>();//支持并发读写的ArrayList
-    private CopyOnWriteArrayList<IonNewBookArrived> mCustomers = new CopyOnWriteArrayList<>();
+    private RemoteCallbackList<IonNewBookArrived> mCustomers = new RemoteCallbackList<>();
 
     private HandlerThread WorkThread = new HandlerThread("BookManagerService's Thread",
             Process.THREAD_PRIORITY_BACKGROUND);
@@ -73,6 +74,7 @@ public class BookManagerService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
+        Log.d(TAG, "onBind currentThread:"+Thread.currentThread().getName());
       return mBinder;
     }
 
@@ -83,12 +85,18 @@ public class BookManagerService extends Service {
             return;
         }
         mList.add(book);
-        Log.d(TAG, "onNewBookArrived: Size: "+mCustomers.size());
-        Log.d(TAG, "Book Name is:"+book.BookName+" Author is:"+book.Author);
-        for(int i = 0;i < mCustomers.size();i++){
-            IonNewBookArrived listener = mCustomers.get(i);
-            listener.onNewBookArrived(book);
+        Log.d(TAG, "onNewBook currentThread:"+Thread.currentThread().getName());
+//        Log.d(TAG, "onNewBookArrived: Size: "+mCustomers.);
+//        Log.d(TAG, "Book Name is:"+book.BookName+" Author is:"+book.Author);
+        final int N = mCustomers.beginBroadcast();
+        Log.d(TAG, "目前的订阅数："+N);
+        for(int i = 0;i < N;i++){
+            IonNewBookArrived listener = mCustomers.getBroadcastItem(i);
+            if(listener != null){
+                listener.onNewBookArrived(book);
+            }
         }
+        mCustomers.finishBroadcast();
     }
 
 
@@ -101,6 +109,7 @@ public class BookManagerService extends Service {
     private class mBinder extends BookManager.Stub{
         @Override
         public void addBook(Book book) throws RemoteException {
+            Log.d(TAG, "addBook currentThread:"+Thread.currentThread().getName());
             if(book != null){
                 mList.add(book);
                 Message message = mHandler.obtainMessage();
@@ -113,38 +122,49 @@ public class BookManagerService extends Service {
         }
         @Override
         public List<Book> getBookList() throws RemoteException {
+            try{
+                Thread.sleep(5000);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
             return mList;
         }
         @Override
         public boolean registerListener(IonNewBookArrived listener) throws RemoteException {
-            if(!mCustomers.contains(listener)){
-                //((Observers)listener).Id = 0;
-                mCustomers.add(listener);
-                Log.d(TAG, "用户已添加");
-                //DispAll();
-                return true;
-            }else{
-                Log.d(TAG, "用户已存在");
-                return false;
-            }
+//            if(!mCustomers.contains(listener)){
+//                //((Observers)listener).Id = 0;
+//                mCustomers.add(listener);
+//                Log.d(TAG, "用户已添加");
+//                //DispAll();
+//                return true;
+//            }else{
+//                Log.d(TAG, "用户已存在");
+//                return false;
+//            }
+            mCustomers.register(listener);
+            Log.d(TAG, "register currentThread:"+Thread.currentThread().getName());
+            return true;
         }
         @Override
         public boolean unregisterListener(IonNewBookArrived listener) throws RemoteException {
-            if(mCustomers.contains(listener)){
-                mCustomers.remove(listener);
-                Log.d(TAG, "用户已移除");
-                return true;
-            }else{
-                Log.d(TAG, "该用户不存在!");
-                return false;
-            }
+//            if(mCustomers.contains(listener)){
+//                mCustomers.remove(listener);
+//                Log.d(TAG, "用户已移除");
+//                return true;
+//            }else{
+//                Log.d(TAG, "该用户不存在!");
+//                return false;
+//            }
+            mCustomers.unregister(listener);
+            return true;
         }
 
-        public void DispAll(){
-            Log.d(TAG, "接下来是服务端中的数据:");
-            for(int i = 0;i < mCustomers.size();i++){
-                Log.d(TAG, "My id is:"+((Observers)mCustomers.get(i)).Id);
-            }
-        }
+//        public void DispAll(){
+//            Log.d(TAG, "接下来是服务端中的数据:");
+//            for(int i = 0;i < mCustomers.size();i++){
+//                Log.d(TAG, "My id is:"+((Observers)mCustomers.get(i)).Id);
+//            }
+//        }
     };
 }

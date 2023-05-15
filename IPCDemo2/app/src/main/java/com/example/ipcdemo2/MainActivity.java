@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     BookManager manager;
     int Bookcounter = 0;
     int obCounter = 0;
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "BookManager";
     ArrayList<Observers> obList = new ArrayList<>();
 
     @Override
@@ -69,10 +69,28 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        binding.btGetList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            manager.getBookList();
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }).start();
+
+            }
+        });
+
         binding.btShow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "接下来是客户端中的数据:");
+                Log.d(TAG, "current:"+Thread.currentThread().getName());
                 for(int i = 0;i < obList.size();i++){
                     Log.d(TAG, "My Id is: "+obList.get(i).Id);
                 }

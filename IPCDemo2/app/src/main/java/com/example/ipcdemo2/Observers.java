@@ -18,7 +18,13 @@ public class Observers extends IonNewBookArrived.Stub {
 
     @Override
     public void onNewBookArrived(Book newBook) throws RemoteException {
+//        try {
+//            Thread.sleep(5000);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
         Log.d(TAG, "My Id is:"+Id);
+        Log.d(TAG, "curThread:"+Thread.currentThread().getName());
     }
 
 }
