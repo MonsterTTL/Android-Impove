@@ -27,17 +27,21 @@ public class MainActivity extends AppCompatActivity {
     int Bookcounter = 0;
     int obCounter = 0;
     private static final String TAG = "BookManager";
+    private mServiceConnection mServiceConnection = new mServiceConnection();
+    private mDeathPro mDeathPro = new mDeathPro();//死亡代理
     ArrayList<Observers> obList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Thread.currentThread().setName("MainActivity's UI  Thread!");
+        Log.d(TAG, "onCreate: + Main CurThread: "+Thread.currentThread().getName());
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
         binding.btBind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, BookManagerService.class);
-                bindService(intent,new mServiceConnection(),BIND_AUTO_CREATE);
+                bindService(intent,mServiceConnection ,BIND_AUTO_CREATE);
             }
         });
 
@@ -78,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             manager.getBookList();
                         } catch (RemoteException e) {
-                            throw new RuntimeException(e);
+                            e.printStackTrace();
                         }
                     }
                 }).start();
@@ -94,6 +98,8 @@ public class MainActivity extends AppCompatActivity {
                 for(int i = 0;i < obList.size();i++){
                     Log.d(TAG, "My Id is: "+obList.get(i).Id);
                 }
+                //unbindService(mServiceConnection);
+                //checkCallingOrSelfPermission() -- 监察权限用的
             }
         });
 
@@ -118,12 +124,18 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             manager = BookManager.Stub.asInterface(service);
+            try {
+                service.linkToDeath(mDeathPro,0); //设置一个死亡代理
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
             Toast.makeText(MainActivity.this, "绑定成功", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
             Toast.makeText(MainActivity.this, "连接已丢失", Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "onServiceDisconnected: 连接已丢失");
         }
     }
 
@@ -140,5 +152,21 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    private class mDeathPro implements IBinder.DeathRecipient{ //给Binder设置死亡代理
+
+        @Override
+        public void binderDied() {
+            if(manager == null){
+                return;
+            }
+            manager.asBinder().unlinkToDeath(this,0);
+            manager = null;
+            Log.d(TAG, "死亡代理触发");
+            Intent intent = new Intent(MainActivity.this,BookManagerService.class);
+            bindService(intent,mServiceConnection,BIND_AUTO_CREATE);
+            //重新连接
+        }
     }
 }

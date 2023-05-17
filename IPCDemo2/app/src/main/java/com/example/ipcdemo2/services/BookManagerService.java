@@ -28,6 +28,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class BookManagerService extends Service {
     private static final String TAG = "BookManagerService";
     public static final int UPDATE = 1;
+    private String ErrorTest = null;
     private CopyOnWriteArrayList<Book> mList = new CopyOnWriteArrayList<>();//支持并发读写的ArrayList
     private RemoteCallbackList<IonNewBookArrived> mCustomers = new RemoteCallbackList<>();
 
@@ -67,6 +68,12 @@ public class BookManagerService extends Service {
     @Override
     public void onCreate() {
         WorkThread.start();
+//        try {
+//            Thread.sleep(10000);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
+        Log.d(TAG, "onCreate: currentThread = " + Thread.currentThread().getName());
         mLooper = WorkThread.getLooper();
         mHandler = new mHandler(mLooper);
 
@@ -75,7 +82,13 @@ public class BookManagerService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         Log.d(TAG, "onBind currentThread:"+Thread.currentThread().getName());
-      return mBinder;
+        return mBinder;
+    }
+
+    @Override
+    public boolean onUnbind(Intent intent) {
+        Log.d(TAG, "onUnbind: ");
+        return super.onUnbind(intent);
     }
 
     //通知订阅者更新了
@@ -118,16 +131,13 @@ public class BookManagerService extends Service {
                 mBundle.putParcelable("newBook",book);//Bundle 再放 Message
                 message.setData(mBundle);
                 mHandler.sendMessage(message);
+                //ErrorTest.toLowerCase();
+
+
             }
         }
         @Override
         public List<Book> getBookList() throws RemoteException {
-            try{
-                Thread.sleep(5000);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-
             return mList;
         }
         @Override
@@ -167,4 +177,6 @@ public class BookManagerService extends Service {
 //            }
 //        }
     };
+
+
 }
