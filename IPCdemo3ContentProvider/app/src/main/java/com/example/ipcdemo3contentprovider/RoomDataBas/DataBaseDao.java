@@ -8,6 +8,8 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import java.util.List;
+
 @Dao
 public interface DataBaseDao {
 
@@ -30,7 +32,7 @@ public interface DataBaseDao {
     public void deleteBook(Book... books);
 
     @Query("SELECT * FROM Users")
-    public User[] loadAllUsers();
+    public List<User> loadAllUsers();
 
     @Query("SELECT * FROM Users")
     public Cursor loadAllUsersWithCursor();
@@ -39,5 +41,5 @@ public interface DataBaseDao {
     public Cursor loadAllBooksWithCursor();
 
     @Query("SELECT * FROM Books")
-    public Book[] loadAllBooks();
+    public List<Book> loadAllBooks();
 }

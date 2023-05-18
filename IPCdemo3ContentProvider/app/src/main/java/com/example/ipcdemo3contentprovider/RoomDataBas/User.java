@@ -11,8 +11,11 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "Users")
 public class User implements Parcelable {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     public int id;
+
+    @ColumnInfo(name = "uid")
+    public int uid;
 
     @ColumnInfo(name = "name")
     public String name;
@@ -20,14 +23,15 @@ public class User implements Parcelable {
     @ColumnInfo(name = "isMale")
     public boolean isMaile;
 
-    public User(int id, String name, boolean isMaile) {
-        this.id = id;
+    public User(int uid, String name, boolean isMaile) {
+        this.uid = uid;
         this.name = name;
         this.isMaile = isMaile;
     }
 
     protected User(Parcel in) {
         id = in.readInt();
+        uid = in.readInt();
         name = in.readString();
         isMaile = in.readByte() != 0;
     }
@@ -52,6 +56,7 @@ public class User implements Parcelable {
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeInt(id);
+        dest.writeInt(uid);
         dest.writeString(name);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             dest.writeBoolean(isMaile);

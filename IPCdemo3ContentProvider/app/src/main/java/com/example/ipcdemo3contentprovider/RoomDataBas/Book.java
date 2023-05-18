@@ -11,19 +11,27 @@ import androidx.room.PrimaryKey;
 //Room数据库的数据实体类
 @Entity(tableName = "Books")
 public class Book implements Parcelable {
-    @PrimaryKey //定义主键
+    @PrimaryKey(autoGenerate = true) //定义主键
     public int id;
+
+    @ColumnInfo(name = "uid")
+    public int uid;
 
     @ColumnInfo(name = "name")
     public String name;
 
-    public Book(int id,String name){
-        this.id = id;
+    public int getId(){
+        return id;
+    }
+
+    public Book(int uid,String name){
+        this.uid = uid;
         this.name = name;
     }
 
     protected Book(Parcel in) {
         id = in.readInt();
+        uid = in.readInt();
         name = in.readString();
     }
 
@@ -47,6 +55,7 @@ public class Book implements Parcelable {
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeInt(id);
+        dest.writeInt(uid);
         dest.writeString(name);
     }
 }

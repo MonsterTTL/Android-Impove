@@ -48,8 +48,27 @@ public class BookProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        // Implement this to handle requests to delete one or more rows.
-        throw new UnsupportedOperationException("Not yet implemented");
+        //就删除最后一条
+        Log.d(TAG, "delete");
+        String tableName = getTableName(uri);
+        if(tableName == null){
+            Log.d(TAG, "delete: null table");
+            throw new IllegalArgumentException("Unsupported URI:"+uri);
+        }
+        int length = mDao.loadAllBooks().size();
+        if(length <= 0){
+            Log.d(TAG, "Error !! delete: "+"Length is :"+length);
+        }
+
+        Log.d(TAG, "delete: length is + "+length);
+        List<Book> books = mDao.loadAllBooks();
+        List<User> users = mDao.loadAllUsers();
+        for(Book book:books){
+            Log.d(TAG, "item: +"+book.getId());
+        }
+        mDao.deleteUser(users.get(length-1));
+        mDao.deleteBook(books.get(length-1));
+        return 1;
     }
 
     @Override
@@ -80,7 +99,7 @@ public class BookProvider extends ContentProvider {
     public boolean onCreate() {
         Log.d(TAG, "onCreate, currentThread is :"+Thread.currentThread().getName());
         //初始化Room数据库 和 数据访问接口
-        mDataBase = Room.databaseBuilder(getContext(),DemoDataBase.class,"DemoData").build();
+        mDataBase = Room.databaseBuilder(getContext(),DemoDataBase.class,"DemoData5").build();
         mDao = mDataBase.getMyDao();
         return true;
     }

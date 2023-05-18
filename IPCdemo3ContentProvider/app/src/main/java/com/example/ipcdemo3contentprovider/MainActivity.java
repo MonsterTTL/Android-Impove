@@ -56,13 +56,10 @@ public class MainActivity extends AppCompatActivity {
                 Book book = new Book(Uid,name);
                 User user = new User(Uid,name,true);
                 Uid++;
-//                Bundle bundle = new Bundle();
-//                bundle.putParcelable("book",book);
-//                bundle.putParcelable("user",user);
                 ContentValues values = new ContentValues();
-                values.put("book_id",book.id);
+                values.put("book_id",book.uid);
                 values.put("book_name",book.name);
-                values.put("user_id",user.id);
+                values.put("user_id",user.uid);
                 values.put("user_name",user.name);
                 values.put("user_isMale",user.isMaile);
                 getContentResolver().insert(BookProvider.USER_CONTENT_URI,values);
@@ -71,6 +68,17 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        binding.btDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getContentResolver().delete(BookProvider.BOOK_CONTENT_URI,null,null);
+            }
+        });
+
+    }
+
+    private void initId(){
 
     }
 }
