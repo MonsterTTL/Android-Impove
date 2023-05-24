@@ -12,50 +12,38 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
-        <com.example.zidingyi.CustomView
-            android:id="@+id/customView"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="#B3E5FC"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.908"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.132" />
-
-        <com.example.zidingyi.MyFloat
+        <com.example.zidingyi.ScrollerCustomView
             android:id="@+id/myfloat"
             android:layout_width="60dp"
             android:layout_height="60dp"
             app:fabSize="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.279"
+            app:layout_constraintHorizontal_bias="0.045"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.119"
+            app:layout_constraintVertical_bias="0.038"
             app:rippleColor="@color/white"
             tools:fabCustomSize="60dp" />
 
-        <com.example.zidingyi.ScrollCustomView
-            android:id="@+id/scrollCustomView"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginStart="208dp"
-            android:layout_marginTop="72dp"
-            android:background="#F44336"
+        <com.example.zidingyi.VelocityTrackerView
+            android:id="@+id/mVelocityTrackerView"
+            android:layout_width="418dp"
+            android:layout_height="265dp"
+            android:layout_marginTop="100dp"
+            android:background="#E3F2FD"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.example.zidingyi.ScrollerCustomView
-            android:id="@+id/scrollerCustomView2"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="108dp"
-            android:layout_marginTop="232dp"
-            android:background="#3F51B5"
+        <com.example.zidingyi.GestureDetectorView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#FBE9E7"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/mVelocityTrackerView" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

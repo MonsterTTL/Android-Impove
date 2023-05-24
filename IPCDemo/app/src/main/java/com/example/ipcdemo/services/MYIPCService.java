@@ -3,10 +3,12 @@ package com.example.ipcdemo.services;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
 
+import com.example.ipcdemo.Activities.MainActivity;
 import com.example.ipcdemo.aidl.Book;
 import com.example.ipcdemo.aidl.IBookManager;
 import com.example.ipcdemo.services.mIBookManager;
@@ -36,6 +38,8 @@ public class MYIPCService extends Service {
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "Service has been Created!");
+
+
     }
 
     @Override

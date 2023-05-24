@@ -15,7 +15,8 @@
             android:process="com.myService"
             android:name=".services.mService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true">
+        </service>
 
         <activity
             android:name=".MainActivity"
@@ -27,5 +28,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

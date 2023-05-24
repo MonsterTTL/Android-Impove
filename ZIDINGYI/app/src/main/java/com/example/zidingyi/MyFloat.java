@@ -21,6 +21,7 @@ public class MyFloat extends FloatingActionButton {
         super(context);
     }
 
+
     public MyFloat(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
@@ -35,13 +36,12 @@ public class MyFloat extends FloatingActionButton {
         //只要有触摸事件，该两行代码就会执行记录下坐标
         int x = (int) motionEvent.getX();//
         int y = (int) motionEvent.getY();//
-
-
         //手指的移动是快于绘图重新绘制的
         switch (motionEvent.getAction()){
             case MotionEvent.ACTION_DOWN://事件按下
                 lastX = x;
                 lastY = y;
+                Log.d(TAG, "DOWN");
                 break;
             case MotionEvent.ACTION_MOVE:
                 //计算偏移量
@@ -54,8 +54,10 @@ public class MyFloat extends FloatingActionButton {
                 layoutParams.leftMargin = layoutParams.leftMargin + offsetX;
                 layoutParams.topMargin = layoutParams.topMargin + offsetY;
                 setLayoutParams(layoutParams);
+                Log.d(TAG, "MOVE");
                 break;
             case MotionEvent.ACTION_UP://事件抬起
+                Log.d(TAG, "UP");
                 break;
             case MotionEvent.ACTION_BUTTON_PRESS:
                 break;

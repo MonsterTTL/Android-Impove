@@ -80,6 +80,11 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         try {
+
+                            Intent intent = getIntent();
+                            Book book = intent.getParcelableExtra("book");
+
+
                             manager.getBookList();
                         } catch (RemoteException e) {
                             e.printStackTrace();

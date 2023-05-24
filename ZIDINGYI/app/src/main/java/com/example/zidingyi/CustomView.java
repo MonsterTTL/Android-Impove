@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 public class CustomView extends View {
     private static final String TAG = "CustomView";
@@ -54,7 +55,8 @@ public class CustomView extends View {
                 // 这些坐标的值应该是相对于视图的父视图的坐标系的，而不是相对于屏幕的坐标系。
                 //当我们调用layout()方法时，它会根据传入的坐标值，直接改变视图在其父视图中的位置，而不会涉及到布局参数。
                 // 布局参数是在视图初始化或调用setLayoutParams()方法时设置的，
-                // 它描述了视图在布局中的一些特性，例如视图的宽度、高度、外边距等。这些布局参数不会在调用layout()方法时被修改。
+                // 它描述了视图在布局中的一些特性，例如视图的宽度、高度、外边距等。
+                // 这些布局参数不会在调用layout()方法时被修改。
                 //需要注意的是，虽然调用layout()方法可以改变视图在其父视图中的位置，但它并不是推荐的方式。
                 // 通常情况下，应该通过修改视图的布局参数来控制其位置，以便实现更加灵活和可维护的布局。
                 params.leftMargin += offsetX;
@@ -68,4 +70,6 @@ public class CustomView extends View {
 
         return true;//表示该事件已被处理并且消费掉了，不再传递给其他的视图
     }
+
+
 }
