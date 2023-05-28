@@ -16,14 +16,15 @@
             android:id="@+id/myfloat"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:background="@drawable/ic_launcher_background"
             app:fabSize="normal"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/mVelocityTrackerView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.045"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.038"
-            app:rippleColor="@color/white"
+            app:rippleColor="@color/purple_200"
             tools:fabCustomSize="60dp" />
 
         <com.example.zidingyi.VelocityTrackerView

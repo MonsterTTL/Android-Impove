@@ -38,7 +38,7 @@ public class ScrollerCustomView extends View {
         //用于计算滚动量，当返回值为true时，说明滚动尚未完成；否则说明滚动已经完成
         if(mScroller.computeScrollOffset()){
             ((View)getParent()).scrollTo(mScroller.getCurrX(),mScroller.getCurrY());
-            invalidate();//不断进行重新绘制
+            postInvalidate();//不断进行重新绘制
         }
     }
 
