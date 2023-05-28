@@ -69,6 +69,9 @@ public class StickyLayout extends LinearLayout {
         int y = (int) ev.getY();
         switch (ev.getAction()){
             case MotionEvent.ACTION_DOWN:{
+                if(!mScroller.isFinished()){
+                    mScroller.abortAnimation();
+                }
                 intercept = false;
                 break;
             }
@@ -125,7 +128,7 @@ public class StickyLayout extends LinearLayout {
             case MotionEvent.ACTION_MOVE:{
                 int deltaX = x - mLastX;
                 int deltaY = y - mLastY;
-                scrollBy(0,-deltaY);
+                scrollBy(0,(int) (-deltaY * 1.3));
                 break;
             }
             case MotionEvent.ACTION_UP:{

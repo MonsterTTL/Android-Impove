@@ -31,6 +31,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate: ");
         initView2();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     private void initView(){//初始化视图
